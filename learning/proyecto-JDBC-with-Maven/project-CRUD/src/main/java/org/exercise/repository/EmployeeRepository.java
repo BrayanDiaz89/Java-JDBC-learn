@@ -12,12 +12,17 @@ import java.util.List;
 
 public class EmployeeRepository implements Repository<Employee>{
 
-    private static final String SELECT_All_EMPLOYEES = "SELECT * FROM employees";
+    private static final String SELECT_All_EMPLOYEES = "SELECT * FROM employees WHERE active = true";
     private static final String SELECT_EMPLOYEE_BY_ID = "SELECT * FROM employees WHERE id = ? ";
     private static final String INSERT_INTO_EMPLOYEES = """
                                                         INSERT INTO employees
-                                                        (first_name, pa_surname, ma_surname, email, salary)
-                                                        VALUES (?, ?, ?, ?, ?)
+                                                        (first_name, pa_surname, ma_surname, email, salary, active)
+                                                        VALUES (?, ?, ?, ?, ?, ?)
+                                                        """;
+    private static final String DELETE_EMPLOYEE_BY_ID = """
+                                                        UPDATE employees
+                                                        SET active = ?
+                                                        WHERE id = ?
                                                         """;
 
     private Connection getConnectionToDB() throws SQLException{
@@ -37,7 +42,8 @@ public class EmployeeRepository implements Repository<Employee>{
                         resultSet.getString("pa_surname"),
                         resultSet.getString("ma_surname"),
                         resultSet.getString("email"),
-                        resultSet.getFloat("salary")
+                        resultSet.getFloat("salary"),
+                        resultSet.getBoolean("active")
                 );
                 employees.add(employee);
             }
@@ -57,7 +63,8 @@ public class EmployeeRepository implements Repository<Employee>{
                             resultSet.getString("pa_surname"),
                             resultSet.getString("ma_surname"),
                             resultSet.getString("email"),
-                            resultSet.getFloat("salary"));
+                            resultSet.getFloat("salary"),
+                            resultSet.getBoolean("active"));
                 } else{
                     System.out.println("Empleado no existe.");
                     return null;
@@ -75,6 +82,7 @@ public class EmployeeRepository implements Repository<Employee>{
             statement.setString(3, employee.getMa_surname());
             statement.setString(4, employee.getEmail());
             statement.setFloat(5, employee.getSalary());
+            statement.setBoolean(6, employee.isActive());
             var rowsAffected = statement.executeUpdate();
 
             if(rowsAffected > 0){
@@ -93,7 +101,17 @@ public class EmployeeRepository implements Repository<Employee>{
     }
 
     @Override
-    public void deleteEmployee(Integer id) {
+    public void deleteEmployee(Integer id) throws SQLException {
+        try(var statement = getConnectionToDB().prepareStatement(DELETE_EMPLOYEE_BY_ID)){
+            statement.setBoolean(1, false);
+            statement.setInt(2, id);
+            var rowsAffected = statement.executeUpdate();
 
+            if(rowsAffected > 0){
+                System.out.println("Usuario eliminado con éxito!.");
+            } else {
+                System.out.println("No fue posible eliminar a ningún usuario. Id no encontrado.");
+            }
+        }
     }
 }

@@ -7,25 +7,27 @@ public class Employee {
     private String ma_surname;
     private String email;
     private Float salary;
+    private boolean active;
 
     public Employee(){}
 
-    public Employee(Integer id, String first_name, String pa_surname, String ma_surname, String email, Float salary) {
+    public Employee(Integer id, String first_name, String pa_surname, String ma_surname, String email, Float salary, boolean active) {
         this.id = id;
         this.first_name = first_name;
         this.pa_surname = pa_surname;
         this.ma_surname = ma_surname;
         this.email = email;
         this.salary = salary;
+        this.active = active;
     }
 
-    public Employee(String first_name, String pa_surname, String ma_surname, String email, Float salary) {
-        this.id = id;
+    public Employee(String first_name, String pa_surname, String ma_surname, String email, Float salary, boolean active) {
         this.first_name = first_name;
         this.pa_surname = pa_surname;
         this.ma_surname = ma_surname;
         this.email = email;
         this.salary = salary;
+        this.active = active;
     }
 
     public Integer getId() {
@@ -76,6 +78,14 @@ public class Employee {
         this.salary = salary;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     @Override
     public String toString() {
         return String.format("""
@@ -86,7 +96,8 @@ public class Employee {
                 ma_surname =  %s,
                 email = %s,
                 Salary = %.2f
+                Active = %b
                 """, id, first_name, pa_surname,
-                     ma_surname, email, salary);
+                     ma_surname, email, salary, active);
     }
 }

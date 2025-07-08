@@ -44,9 +44,14 @@ public class ProjectMain {
             Float salary = keyboard.nextFloat();
 
             Employee employee1 = new Employee(nombre,
-                    apellido1, apellido2, email, salary);
+                    apellido1, apellido2, email, salary, true);
             repository.saveEmployee(employee1);
             System.out.println(repository.getEmployeeById(employee1.getId()));
+
+            //Eliminación lógica de un empleado
+            System.out.print("Digite el id del empleadoa a eliminar: ");
+            idEmployee = keyboard.nextInt();
+            repository.deleteEmployee(idEmployee);
 
         }catch (SQLException ex){
             throw new RuntimeException("Error conectandose a la base de datos." + ex);
