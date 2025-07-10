@@ -26,7 +26,7 @@ public class EmployeeRepository implements Repository<Employee>{
                                                         """;
 
     private Connection getConnectionToDB() throws SQLException{
-        return DataBaseConnection.getConnectionToDB();
+        return DataBaseConnection.getConnection();
     }
 
     @Override
