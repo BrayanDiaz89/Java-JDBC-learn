@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class ProjectMain {
     public static void main(String[] args) {
 
-        try (var connection = DataBaseConnection.getConnectionToDB();
+        try (var connection = DataBaseConnection.getConnection();
              var keyboard = new Scanner(System.in);){
             String sql = "SELECT * FROM employees";
             try(var statement = connection.createStatement();
