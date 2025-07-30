@@ -2,6 +2,7 @@ package org.example;
 
 import jakarta.persistence.EntityManager;
 import org.example.entity.Employee;
+import org.example.service.EmployeeService;
 import org.example.util.UtilEntity;
 
 import java.util.List;
@@ -11,21 +12,14 @@ public class Main {
     public static void main(String[] args) {
 
         var keyboard = new Scanner(System.in);
+        EmployeeService service = new EmployeeService();
 
-        EntityManager em = UtilEntity.getEntityManager();
-        List<Employee> employees = em.createQuery("SELECT e FROM Employee e WHERE e.active=true", Employee.class).getResultList();
         System.out.println("-------LISTADO DE EMPLEADOS-------");
-        employees.forEach(System.out::println);
+        service.listarEmpleadosActivos().forEach(System.out::println);
         System.out.println("-------BUSCAR A UN EMPLEADO-------");
-        System.out.println("Digite el id del empleado: ");
-        int employeeId = keyboard.nextInt();
-        keyboard.nextLine();
-        Employee employee = em.find(Employee.class, employeeId);
-        if(employee != null) {
-            System.out.println("Empleado encontrado...\n" + employee);
-        } else {
-            System.out.println("No existe un empleado con el id: " + employeeId);
-        }
+        service.findEmployee(keyboard);
+
+
         System.out.println("-------CREAR UN EMPLEADO-------");
         System.out.println("Digite el nombre del empleado: ");
         String firstName = keyboard.nextLine();
