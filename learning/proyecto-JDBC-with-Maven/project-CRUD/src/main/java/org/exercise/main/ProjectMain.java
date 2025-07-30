@@ -22,7 +22,7 @@ public class ProjectMain {
             }
 
             EmployeeRepository repository = new EmployeeRepository();
-            System.out.println(repository.findAllEmployees());
+            repository.findAllEmployees().forEach(System.out::println);
 
             System.out.println("Digite el id del empleado: ");
             var idEmployee = keyboard.nextInt();
